@@ -172,7 +172,7 @@ struct hexagonfs_dirent *construct_root_dir(const char *prefix, const char *dsp)
 	 * Some platforms need vendor in / and some need it in /system. Form
 	 * a hard link between both locations.
 	 */
-	vendor_dir = hfs_mkdir("vendor", 1,
+	vendor_dir = hfs_mkdir("odm", 1,
 				hfs_mkdir("etc", 2,
 					hfs_mkdir("sensors", 2,
 						hfs_map_or_empty("config", sns_cfg),
