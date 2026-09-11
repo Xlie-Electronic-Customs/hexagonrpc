@@ -228,6 +228,9 @@ struct hexagonfs_dirent *construct_root_dir(const char *prefix, const char *dsp)
 			hfs_mkdir("system", 1,
 				vendor_dir
 			),
+			hfs_mkdir("odm", 1,
+				odm_dir
+			),
 			odm_dir,
 			hfs_mkdir("usr", 1,
 				hfs_mkdir("lib", 1,
