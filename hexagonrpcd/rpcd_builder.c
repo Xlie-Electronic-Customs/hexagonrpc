@@ -190,8 +190,8 @@ struct hexagonfs_dirent *construct_root_dir(const char *prefix, const char *dsp)
 			);
 
 	odm_dir = hfs_mkdir("odm", 1,
-				hfs_mkdir("etc", 2,
-					hfs_mkdir("sensors", 2,
+				hfs_mkdir("etc", 1,
+					hfs_mkdir("sensors", 1,
 						hfs_map_or_empty("config", odm_cfg)
 					)
 				)
