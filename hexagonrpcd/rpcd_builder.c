@@ -193,12 +193,11 @@ struct hexagonfs_dirent *construct_root_dir(const char *prefix, const char *dsp)
 				hfs_mkdir("etc", 2,
 					hfs_mkdir("sensors", 2,
 						hfs_map_or_empty("config", odm_cfg)
-						// hfs_map("sns_reg_config", sns_reg_config)
 					)
 				)
 			);
 
-	return hfs_mkdir("/", 6,
+	return hfs_mkdir("/", 7,
 			hfs_mkdir("mnt", 1,
 				hfs_mkdir("vendor", 1,
 					persist_dir
@@ -213,9 +212,7 @@ struct hexagonfs_dirent *construct_root_dir(const char *prefix, const char *dsp)
 			hfs_mkdir("system", 1,
 				vendor_dir
 			),
-			hfs_mkdir("system", 1,
-				odm_dir
-			),
+			odm_dir,
 			hfs_mkdir("usr", 1,
 				hfs_mkdir("lib", 1,
 					hfs_mkdir("qcom", 1,
