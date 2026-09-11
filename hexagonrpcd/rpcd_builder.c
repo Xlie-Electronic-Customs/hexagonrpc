@@ -194,7 +194,7 @@ struct hexagonfs_dirent *construct_root_dir(const char *prefix, const char *dsp)
 					hfs_mkdir("sensors", 2,
 						hfs_map_or_empty("config", odm_cfg)
 						// hfs_map("sns_reg_config", sns_reg_config)
-					),
+					)
 				)
 			);
 
