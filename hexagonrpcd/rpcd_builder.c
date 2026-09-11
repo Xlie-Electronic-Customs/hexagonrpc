@@ -183,8 +183,10 @@ struct hexagonfs_dirent *construct_root_dir(const char *prefix, const char *dsp)
 	 */
 	persist_dir = hfs_mkdir("persist", 1,
 				hfs_mkdir("sensors", 1,
-					hfs_mkdir("registry", 1,
-						hfs_map("registry", sns_reg)
+					hfs_mkdir("registry", 3,
+						hfs_map("registry", sns_reg),
+						hfs_map("sns_reg_version", sns_reg_version),
+						hfs_map("temp.json", temp_reg)
 					)
 				)
 		      );
@@ -195,11 +197,9 @@ struct hexagonfs_dirent *construct_root_dir(const char *prefix, const char *dsp)
 	 */
 	vendor_dir = hfs_mkdir("vendor", 1,
 				hfs_mkdir("etc", 2,
-					hfs_mkdir("sensors", 4,
+					hfs_mkdir("sensors", 2,
 						hfs_map_or_empty("config", sns_cfg),
-						hfs_map("sns_reg_config", sns_reg_config),
-						hfs_map("sns_reg_version", sns_reg_version),
-						hfs_map("temp.json", temp_reg)
+						hfs_map("sns_reg_config", sns_reg_config)
 					),
 					hfs_map("acdbdata", acdbdata)
 				)
