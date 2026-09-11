@@ -32,6 +32,7 @@
 #define ODM_CONFIG		"/odm/config/"
 #define SENSORS_REGISTRY	"/sensors/registry/"
 #define SNS_REG_CONFIG		"/sensors/sns_reg.conf"
+#define SNS_REG_VERSION		"/sensors/sns_reg_version"
 #define SYSFS_SOCINFO		"/socinfo/"
 
 static struct hexagonfs_dirent *hfs_mkdir(const char *name, size_t n_ents, ...)
@@ -112,7 +113,7 @@ static struct hexagonfs_dirent *hfs_map_or_empty(const char *name, const char *p
  */
 struct hexagonfs_dirent *construct_root_dir(const char *prefix, const char *dsp)
 {
-	char *acdbdata, *dsp_libs, *sns_cfg, *odm_cfg, *sns_reg, *sns_reg_config, *socinfo;
+	char *acdbdata, *dsp_libs, *sns_cfg, *odm_cfg, *sns_reg, *sns_reg_config, *sns_reg_version, *socinfo;
 	size_t n_prefix;
 	struct hexagonfs_dirent *persist_dir, *vendor_dir, *odm_dir;
 
@@ -123,6 +124,7 @@ struct hexagonfs_dirent *construct_root_dir(const char *prefix, const char *dsp)
 	odm_cfg = malloc(n_prefix + strlen(ODM_CONFIG) + 1);
 	sns_reg = malloc(n_prefix + strlen(SENSORS_REGISTRY) + 1);
 	sns_reg_config = malloc(n_prefix + strlen(SNS_REG_CONFIG) + 1);
+	sns_reg_version = malloc(n_prefix + strlen(SNS_REG_VERSION) + 1);
 	socinfo = malloc(n_prefix + strlen(SYSFS_SOCINFO) + 1);
 
 	dsp_libs = malloc(n_prefix + strlen(DSP_LIBS) + strlen(dsp) + 1);
@@ -150,6 +152,11 @@ struct hexagonfs_dirent *construct_root_dir(const char *prefix, const char *dsp)
 	if (sns_reg_config != NULL) {
 		strcpy(sns_reg_config, prefix);
 		strcat(sns_reg_config, SNS_REG_CONFIG);
+	}
+
+	if (sns_reg_version != NULL) {
+		strcpy(sns_reg_version, prefix);
+		strcat(sns_reg_version, SNS_REG_VERSION);
 	}
 
 	if (socinfo != NULL) {
@@ -181,9 +188,10 @@ struct hexagonfs_dirent *construct_root_dir(const char *prefix, const char *dsp)
 	 */
 	vendor_dir = hfs_mkdir("vendor", 1,
 				hfs_mkdir("etc", 2,
-					hfs_mkdir("sensors", 2,
+					hfs_mkdir("sensors", 3,
 						hfs_map_or_empty("config", sns_cfg),
-						hfs_map("sns_reg_config", sns_reg_config)
+						hfs_map("sns_reg_config", sns_reg_config),
+						hfs_map("sns_reg_version", sns_reg_version)
 					),
 					hfs_map("acdbdata", acdbdata)
 				)
