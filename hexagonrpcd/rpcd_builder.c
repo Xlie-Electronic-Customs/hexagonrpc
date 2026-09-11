@@ -33,6 +33,7 @@
 #define SENSORS_REGISTRY	"/sensors/registry/"
 #define SNS_REG_CONFIG		"/sensors/sns_reg.conf"
 #define SNS_REG_VERSION		"/sensors/sns_reg_version"
+#define TEMP_REG		"/sensors/temp.json"
 #define SYSFS_SOCINFO		"/socinfo/"
 
 static struct hexagonfs_dirent *hfs_mkdir(const char *name, size_t n_ents, ...)
@@ -113,7 +114,7 @@ static struct hexagonfs_dirent *hfs_map_or_empty(const char *name, const char *p
  */
 struct hexagonfs_dirent *construct_root_dir(const char *prefix, const char *dsp)
 {
-	char *acdbdata, *dsp_libs, *sns_cfg, *odm_cfg, *sns_reg, *sns_reg_config, *sns_reg_version, *socinfo;
+	char *acdbdata, *dsp_libs, *sns_cfg, *odm_cfg, *sns_reg, *sns_reg_config, *sns_reg_version, *temp_reg, *socinfo;
 	size_t n_prefix;
 	struct hexagonfs_dirent *persist_dir, *vendor_dir, *odm_dir;
 
@@ -125,6 +126,7 @@ struct hexagonfs_dirent *construct_root_dir(const char *prefix, const char *dsp)
 	sns_reg = malloc(n_prefix + strlen(SENSORS_REGISTRY) + 1);
 	sns_reg_config = malloc(n_prefix + strlen(SNS_REG_CONFIG) + 1);
 	sns_reg_version = malloc(n_prefix + strlen(SNS_REG_VERSION) + 1);
+	temp_reg = malloc(n_prefix + strlen(TEMP_REG) + 1);
 	socinfo = malloc(n_prefix + strlen(SYSFS_SOCINFO) + 1);
 
 	dsp_libs = malloc(n_prefix + strlen(DSP_LIBS) + strlen(dsp) + 1);
@@ -159,6 +161,11 @@ struct hexagonfs_dirent *construct_root_dir(const char *prefix, const char *dsp)
 		strcat(sns_reg_version, SNS_REG_VERSION);
 	}
 
+	if (temp_reg != NULL) {
+		strcpy(temp_reg, prefix);
+		strcat(temp_reg, TEMP_REG);
+	}
+
 	if (socinfo != NULL) {
 		strcpy(socinfo, prefix);
 		strcat(socinfo, SYSFS_SOCINFO);
@@ -188,10 +195,11 @@ struct hexagonfs_dirent *construct_root_dir(const char *prefix, const char *dsp)
 	 */
 	vendor_dir = hfs_mkdir("vendor", 1,
 				hfs_mkdir("etc", 2,
-					hfs_mkdir("sensors", 3,
+					hfs_mkdir("sensors", 4,
 						hfs_map_or_empty("config", sns_cfg),
 						hfs_map("sns_reg_config", sns_reg_config),
-						hfs_map("sns_reg_version", sns_reg_version)
+						hfs_map("sns_reg_version", sns_reg_version),
+						hfs_map("temp.json", temp_reg)
 					),
 					hfs_map("acdbdata", acdbdata)
 				)
