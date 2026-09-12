@@ -115,7 +115,7 @@ struct hexagonfs_dirent *construct_root_dir(const char *prefix, const char *dsp)
 {
 	char *acdbdata, *dsp_libs, *sns_cfg, *odm_cfg, *sns_reg, *sns_reg_version, *sns_reg_config, *socinfo;
 	size_t n_prefix;
-	struct hexagonfs_dirent *persist_dir, *vendor_dir;
+	struct hexagonfs_dirent *persist_dir, *vendor_dir, *odm_dir;
 
 	n_prefix = strlen(prefix);
 
@@ -205,7 +205,7 @@ struct hexagonfs_dirent *construct_root_dir(const char *prefix, const char *dsp)
 				)
 			);
 
-	return hfs_mkdir("/", 6,
+	return hfs_mkdir("/", 7,
 			hfs_mkdir("mnt", 1,
 				hfs_mkdir("vendor", 1,
 					persist_dir
@@ -228,6 +228,6 @@ struct hexagonfs_dirent *construct_root_dir(const char *prefix, const char *dsp)
 				)
 			),
 			vendor_dir,
-			odm_dir,
+			odm_dir
 		);
 }
